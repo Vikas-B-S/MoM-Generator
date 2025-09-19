@@ -4,6 +4,8 @@ import os
 from pdfextracter import text_extractor_pdf
 from docxextracter import text_extracter_docx
 from imageextracter import text_extracter_image
+from docx import Document
+import io
 
 # Configure the model
 
@@ -95,10 +97,18 @@ if st.button('Generate MoM'):
       response=model.generate_content(prompt)
       st.markdown(response.text)
 
-    
+      doc = Document()
+      doc.add_heading("Minutes_of_Meetings", 0)
+      doc.add_paragraph(response.text)
+
+      # Save to in-memory file
+      buffer = io.BytesIO()
+      doc.save(buffer)
+      buffer.seek(0)
+
       st.download_button(
-      label="Download Report as PDF",
-      data=response.text,
-      file_name="Structural_Defect_Report.docx",
+      label="Download Report as Word",
+      data=buffer,
+      file_name="Minutes_of_Meetings.docx",
       mime='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       )
