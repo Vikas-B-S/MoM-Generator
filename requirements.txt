@@ -4,4 +4,3 @@ python-docx
 Pillow
 pypdf
 opencv-python-headless
-opencv
