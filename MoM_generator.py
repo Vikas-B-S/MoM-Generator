@@ -32,67 +32,82 @@ if user_file:
 
 # Main page 
 
-st.title(':blue[MINUTES OF MEETING :] :grey[AI assisted MoM generator in a standardized form from meeting motes.]')
+st.title(':blue[MINUTES OF MEETING :] :grey[AI assisted MoM generator in a standardized form from meeting notes.]')
 
-tips='''Tips to use this app
-* Upload your meeting in sidebar(image,pdf,docx)
-* click on generate MOM and get the standardized MOM's'''
+tips = '''
+### How to Use This App
+- Upload your meeting notes in the sidebar (supported formats: PDF, DOCX, PNG, JPG, JPEG).  
+- The AI will process your file and extract the key information.  
+- Click **Generate MoM** to create a professional, structured Minutes of Meeting (MoM).  
+- Download the result instantly as a Word document for sharing or record-keeping.  
+
+**Best Practices:**
+- Upload clear, legible documents for best results.  
+- Ensure the meeting notes include details like attendees, agenda, and action items.  
+- Review the generated MoM and make minor edits if needed before circulation.  
+'''
 st.write(tips)
-
+ 
 if st.button('Generate MoM'):
   if user_text is None:
     st.error('Text is not generated')
   else:
     with st.spinner('Processing your data.....'):
-      prompt=f'''You are an AI assistant that creates professional Minutes of Meeting (MoM) from any document (PDF, DOCX, or image). 
+      prompt = f"""
+      You are an AI assistant specialized in writing **professional, standardized Minutes of Meeting (MoM)** 
+      from uploaded content (PDF, DOCX, or image).
 
-      Instructions:
-      1. Read the content of the uploaded document carefully.
-      2. Extract the following details wherever available:
-          - Meeting Date & Time
-          - Venue / Platform
-          - Attendees
-          - Agenda Items
-          - Discussion Points
-          - Decisions Made
-          - Action Items (include person responsible and deadline if mentioned)
-      3. Organize the extracted information into a clean, structured MoM format.
-      4. Present the output as a readable, concise text suitable for official sharing.
-      5. If any information is missing, leave it blank or note as "Not mentioned."
+      ### Instructions:
+      1. Carefully read and understand the uploaded meeting notes.  
+      2. Extract and organize the following sections wherever possible:
+        - **Meeting Title**  
+        - **Date & Time**  
+        - **Venue / Platform**  
+        - **Attendees**  
+        - **Agenda Items**  
+        - **Discussion Points**  
+        - **Decisions Made**  
+        - **Action Items** (with responsible person and deadline, if mentioned)  
 
-      Example format:
-      
-      Title: Title of the meeting as the heading 
-      Date:  
-      Time:  
-      Venue/Platform:  
-      Attendees:  
+      3. Present the MoM in a clean, structured, and easy-to-read format using bullet points.  
+      4. Highlight important keywords (like **decisions**, **deadlines**, and **responsible persons**) in **bold** for quick scanning.  
+      5. If certain details are not available in the document, write *"Not Mentioned"*.  
+      6. Ensure the output is professional and ready to be copy-pasted directly into a Word document.  
 
-      Agenda:  
-       - Item 1  
-       - Item 2  
+      ---
 
-      Discussion Points:  
-       - Point 1  
-       - Point 2  
+      ### Example Output Format
 
-      Decisions Made:  
-       - Decision 1  
-       - Decision 2  
+      **Title:** [Meeting Title]  
+      **Date:** [DD-MM-YYYY]  
+      **Time:** [HH:MM]  
+      **Venue/Platform:** [Location/Tool]  
+      **Attendees:**  
+      - Person A  
+      - Person B  
 
-      Action Items:  
-       - Task 1 → Responsible: Person A → Deadline: DD-MM-YYYY  
-       - Task 2 → Responsible: Person B → Deadline: DD-MM-YYYY  
+      **Agenda:**  
+      - Item 1  
+      - Item 2  
 
-      Generate the MoM based on the content provided.
+      **Discussion Points:**  
+      - Key discussion point 1  
+      - Key discussion point 2  
 
-      use bulletin points and highlights or bolds important keypoints so that everything is clean and nothing important is missed 
-      user uploaded document is {user_text}
+      **Decisions Made:**  
+      - **Decision 1**  
+      - **Decision 2**  
 
-      generate the output in a format that it can be copied and pasted in a word document.
+      **Action Items:**  
+      - Task 1 → **Responsible:** Person A → **Deadline:** DD-MM-YYYY  
+      - Task 2 → **Responsible:** Person B → **Deadline:** DD-MM-YYYY  
 
-      user uploaded document is {user_text}
-      '''
+      ---
+
+      Now, generate the MoM based strictly on the following document content:  
+
+      {user_text}
+      """
 
       response=model.generate_content(prompt)
       st.markdown(response.text)
